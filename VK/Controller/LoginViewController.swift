@@ -9,6 +9,11 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    //MARK: - Singletone
+    
+    let session = Session.shared
+    
+    
     //MARK: - Properties
     
     @IBOutlet var loginTextField: UITextField!
