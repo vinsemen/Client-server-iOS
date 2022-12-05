@@ -33,9 +33,9 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         // получение списка друзей
-        service.getFriends(token: session.token)
+        //service.getFriends(token: session.token)
         //получение фото пользователя
-        service.getImageUser(token: session.token)
+        //service.getImageUser(token: session.token)
         //получение групп пользователя
         service.getGroupUser(token: session.token)
         

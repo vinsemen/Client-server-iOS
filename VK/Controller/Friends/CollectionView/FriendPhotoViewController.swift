@@ -10,12 +10,23 @@ import UIKit
 //private let reuseIdentifier = "Cell"
 
 class FriendPhotoViewController: UICollectionViewController {
-
-    var arrayImages: [ImagesFriend] = []
+    
+    //MARK: -Singletone
+    let session = Session.shared
+    let service = Service()
+    
+    var friendPhotos = [FriendPhotos]()
+    
+    //var arrayImages: [ImagesFriend] = []
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //получение фото друзей
+        service.getImageUser { answer in
+            self.friendPhotos = answer.items
+        }
 
     }
 
@@ -30,7 +41,7 @@ class FriendPhotoViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return arrayImages.count
+        return friendPhotos.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -40,7 +51,7 @@ class FriendPhotoViewController: UICollectionViewController {
             preconditionFailure("Error")
         }
         
-        cell.imageFriend.image = arrayImages[indexPath.row].image
+        //cell.imageFriend.image = arrayImages[indexPath.row].image
         return cell
     }
     
@@ -50,7 +61,7 @@ class FriendPhotoViewController: UICollectionViewController {
            let photoFriend = segue.destination as? FriendPhotoBigViewController,
            let selectedPhoto = collectionView.indexPathsForSelectedItems?.first {
 
-            photoFriend.photos = arrayImages
+            //photoFriend.photos = friendPhotos
             photoFriend.selectedPhotoIndex = selectedPhoto.row
         }
     }

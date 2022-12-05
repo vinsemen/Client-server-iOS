@@ -12,35 +12,46 @@ class Service {
     
     let baseURL = "https://api.vk.com/method"
     
+    let session = Session.shared
+    
     //получение списка друзей
-    func getFriends(token: String) {
+    func getFriends(completion: @escaping (Response) -> ()) {
         let url = baseURL + "/friends.get"
         
         let parameters: Parameters = [
-            "access_token": token,
+            "access_token": session.token,
             "v": "5.131",
             "count" : 50,
-            "fields": "city,country"
+            "fields": "photo_100"
         ]
         
         AF.request(url, method: .get, parameters: parameters).responseData { responce in
-            print("my friends is \(responce)")
+            if let data = responce.value {
+                let friend = try! JSONDecoder().decode(Response.self, from: data)
+                completion(friend)
+            }
         }
     }
     
     // получение фото пользователя
-    func getImageUser(token: String){
+    func getImageUser(completion: @escaping (ResponsePhotos) -> ()){
         let url = baseURL + "/photos.get"
         
         let parameters: Parameters = [
-            "access_token": token,
-            "owner_id": -51396340,
+            "access_token": session.token,
+            "owner_id": 675405507,//-51396340,
             "album_id": "profile",
             "v": "5.131",
         ]
         
         AF.request(url, method: .get, parameters: parameters).responseData { responce in
-            print("photos is \(responce)")
+            if let data = responce.value {
+                let friendPhotos = try! JSONDecoder().decode(ResponsePhotosFriend.self, from: data)
+                completion(friendPhotos.response)
+            }
+            
+            //print("photos is \(responce)")
+            
         }
     }
     

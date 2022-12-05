@@ -6,11 +6,20 @@
 //
 
 import UIKit
+import SDWebImage
 
 class FriendViewController: UITableViewController, UISearchBarDelegate {
     
     // Привязали SearchBar
     @IBOutlet var mySearchBar: UISearchBar!
+    
+    
+    //MARK: -Singletone
+    let session = Session.shared
+    let service = Service()
+    var myFriends = [FriendProperty]()
+    var myFriendsPhotos = [FriendPhotos]()
+    
 
     var friends = [
         MyFriend(image: UIImage(named: "avatarLuk"), name: "Лука", images: imageFriend),
@@ -33,11 +42,24 @@ class FriendViewController: UITableViewController, UISearchBarDelegate {
         
         // регистрация XIB
         tableView.register(UINib(nibName: "XibTableViewCell", bundle: nil), forCellReuseIdentifier: "FriendXib")
-    
-        mySearchBar.delegate = self
-        makeNamesList()
-        sortCharacterOfNamesAlphabet()
+        
+        //получение списка друзей
+        service.getFriends { answer in
+            self.myFriends = answer.response.items
+
+            self.mySearchBar.delegate = self
+            self.makeNamesList()
+            self.sortCharacterOfNamesAlphabet()
+
+            self.tableView.reloadData()
+        }
     }
+    
+    //не рабочий метод
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        self.tableView.reloadData()
+//    }
     
     //эталонный массив с именами для сравнения при поиске
     var namesListFixed: [String] = []
@@ -50,11 +72,16 @@ class FriendViewController: UITableViewController, UISearchBarDelegate {
     // создание массива из имен пользователей
     func makeNamesList() {
         namesListFixed.removeAll()
-        for item in 0...(friends.count - 1) {
-            namesListFixed.append(friends[item].name)
+        for item in 0...(myFriends.count - 1) {
+//            namesListFixed.append(myFriends[item].firstName)
+            namesListFixed.append(myFriends[item].firstName + " " + myFriends[item].lastName)
         }
         namesListModifed = namesListFixed
     }
+
+    
+    
+    //MARK: - sortCharacterOfNamesAlphabet
     
     // создание массива из начальных букв имен пользователей по алфавиту
     func sortCharacterOfNamesAlphabet() {
@@ -71,6 +98,8 @@ class FriendViewController: UITableViewController, UISearchBarDelegate {
         }
     }
     
+    
+    //MARK: - getNameFriendForCell
     func getNameFriendForCell(_ indexPath: IndexPath) -> String {
         var namesRows = [String]()
         for name in namesListModifed.sorted() {
@@ -82,29 +111,60 @@ class FriendViewController: UITableViewController, UISearchBarDelegate {
     }
     
     
+    //MARK: - getImageFriendForCell
     func getImageFriendForCell(_ indexPath: IndexPath) -> UIImage? {
-        for friend in friends {
+        for friend in myFriends {
             let namesRows = getNameFriendForCell(indexPath)
-            if friend.name.contains(namesRows) {
-                return friend.image
+            let rangeNames = "\(friend.firstName)" + " " + "\(friend.lastName)"
+            if rangeNames.contains(namesRows) {
+                let imageURL = UIImageView()
+                imageURL.sd_setImage(with: URL(string: friend.icon!))
+                return imageURL.image
             }
         }
         return nil
     }
     
-    
-    func getPhotosFriend(_ indexPath: IndexPath) -> [ImagesFriend] {
-        let photos = [ImagesFriend]()
-        for friend in friends {
-            let namesRows = getNameFriendForCell(indexPath)
-            if friend.name.contains(namesRows) {
-                //photos =
 
-                return friend.images
+    //MARK: - original #getImageFriendForCell
+//    func getImageFriendForCell(_ indexPath: IndexPath) -> UIImage? {
+//        for friend in friends {
+//            let namesRows = getNameFriendForCell(indexPath)
+//            if friend.name.contains(namesRows) {
+//                return friend.image
+//            }
+//        }
+//        return nil
+//    }
+    
+    
+    //MARK: - test getPhotosFriend
+    func getPhotosFriend(_ indexPath: IndexPath) -> [sizesPhotosFriend] {
+        //let photos = [FriendPhotos]()
+        for friend in myFriendsPhotos {
+            let namesRows = getNameFriendForCell(indexPath)
+            if String(friend.id).contains(namesRows) {
+                print("friend.sizes = \(friend.sizes)")
+                return friend.sizes
             }
         }
-        return photos
+        return []
     }
+    
+    
+//    //MARK: - getPhotosFriend
+//    func getPhotosFriend(_ indexPath: IndexPath) -> [ImagesFriend] {
+//        let photos = [ImagesFriend]()
+//        for friend in friends {
+//            let namesRows = getNameFriendForCell(indexPath)
+//            if friend.name.contains(namesRows) {
+//                //photos =
+//
+//                return friend.images
+//            }
+//        }
+//        return photos
+//    }
 
     
     
@@ -163,10 +223,8 @@ class FriendViewController: UITableViewController, UISearchBarDelegate {
             preconditionFailure("Error")
         }
         
-        //print(indexPath)
         cell.imageFriend.image = getImageFriendForCell(indexPath)
         cell.nameFriend.text = getNameFriendForCell(indexPath)
-
         return cell
     }
     
@@ -216,7 +274,7 @@ class FriendViewController: UITableViewController, UISearchBarDelegate {
            let destination = segue.destination as? FriendPhotoViewController,
            let indexPath = tableView.indexPathForSelectedRow {
             destination.title = getNameFriendForCell(indexPath)
-            destination.arrayImages = getPhotosFriend(indexPath)
+            //destination.arrayImages = getPhotosFriend(indexPath)
         }
     }
 
