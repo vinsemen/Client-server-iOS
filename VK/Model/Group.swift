@@ -10,12 +10,14 @@ import UIKit
 
 
 class Group {
-    
+
     let name: String
-    let image: UIImage?
-    
-    init(name: String, image: UIImage?) {
+    let description: String
+//    let image: UIImage?
+
+    init(name: String, description: String) {
         self.name = name
-        self.image = image
+        self.description = description
+//        self.image = image
     }
 }

@@ -7,54 +7,54 @@
 
 import UIKit
 
-class AddGroupTableViewController: UITableViewController {
-
-    var addGroup = [
-    
-        Group(name: "Скидки", image: UIImage(systemName: "person.crop.circle.fill.badge.plus")),
-        Group(name: "Много скидок", image: UIImage(systemName: "person.crop.circle.fill.badge.plus"))
-
-    ]
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-        tableView.register(UINib(nibName: "XibTableViewCell", bundle: nil), forCellReuseIdentifier: "FriendXib")
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return addGroup.count
-    }
-
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FriendXib", for: indexPath) as! XibTableViewCell
-
-        let content = cell
-        content.imageFriend.image = addGroup[indexPath.row].image
-        content.nameFriend.text = addGroup[indexPath.row].name
-
-        cell.contentConfiguration = content as? UIContentConfiguration
-
-        return cell
-    }
-    
+//class AddGroupTableViewController: UITableViewController {
+//
+//    var addGroup = [
+//
+////        Group(name: "Скидки", image: UIImage(systemName: "person.crop.circle.fill.badge.plus")),
+////        Group(name: "Много скидок", image: UIImage(systemName: "person.crop.circle.fill.badge.plus"))
+//
+//    ]
+//
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//
+//        tableView.register(UINib(nibName: "XibTableViewCell", bundle: nil), forCellReuseIdentifier: "FriendXib")
+//
+//        // Uncomment the following line to preserve selection between presentations
+//        // self.clearsSelectionOnViewWillAppear = false
+//
+//        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+//        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+//    }
+//
+//    // MARK: - Table view data source
+//
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        // #warning Incomplete implementation, return the number of sections
+//        return 1
+//    }
+//
+//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        // #warning Incomplete implementation, return the number of rows
+//        return addGroup.count
+//    }
+//
+//
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "FriendXib", for: indexPath) as! XibTableViewCell
+//
+//        let content = cell
+//        content.imageFriend.image = addGroup[indexPath.row].image
+//        content.nameFriend.text = addGroup[indexPath.row].name
+//
+//        cell.contentConfiguration = content as? UIContentConfiguration
+//
+//        return cell
+//    }
+//
     
 
 
@@ -103,4 +103,4 @@ class AddGroupTableViewController: UITableViewController {
     }
     */
 
-}
+//}

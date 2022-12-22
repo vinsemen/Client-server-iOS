@@ -10,12 +10,11 @@ import UIKit
 class LoginViewController: UIViewController {
     
     //MARK: - Singletone
-    
     let session = Session.shared
-    let service = Service()
+    let service = Service.shared
+    
     
     //MARK: - Properties
-    
     @IBOutlet var loginTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     
@@ -31,13 +30,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // получение списка друзей
-        //service.getFriends(token: session.token)
-        //получение фото пользователя
-        //service.getImageUser(token: session.token)
-        //получение групп пользователя
-        service.getGroupUser(token: session.token)
         
         navigationController?.setNavigationBarHidden(true, animated: false)
         
