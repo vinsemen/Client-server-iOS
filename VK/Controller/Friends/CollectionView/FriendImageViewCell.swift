@@ -11,9 +11,7 @@ class FriendImageViewCell: UICollectionViewCell {
     
     
     @IBOutlet var imageFriend: UIImageView!
-    
-    
-    
+
     @IBOutlet var likeControl: LikeControl!
     @IBOutlet var container: UIView!
     
